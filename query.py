@@ -46,6 +46,7 @@ def query(**kwargs):
 
 
 def last24h():
+    # Format in RCF3339
     lasthour = datetime.utcnow() - timedelta(days=1)
     return lasthour.isoformat() + "Z"
 
@@ -69,7 +70,7 @@ def print_json(obj):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sansec Intel Query Tool")
-    parser.add_argument("--key", help="License key")
+    parser.add_argument("--key", help="License key", required=True)
     parser.add_argument("--host", help="Search for specific host/domain.")
     parser.add_argument(
         "--max-results", help="Max results to return", default=MAX_RESULTS
