@@ -74,7 +74,7 @@ if __name__ == "__main__":
     parser.add_argument("--key", help="License key", required=True)
     parser.add_argument("--host", help="Search for specific host/domain.")
     parser.add_argument(
-        "--max-results", help="Max results to return", default=MAX_RESULTS
+        "--max-results", help="Max results to return", default=MAX_RESULTS, type=int
     )
     parser.add_argument("--platform", help="Select platform (magento, prestashop, ...)")
     parser.add_argument(
