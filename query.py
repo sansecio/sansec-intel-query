@@ -27,6 +27,7 @@ def query(**kwargs):
         obj = resp.json()
 
         if resp.status_code != 200 or "data" not in obj:
+            print("Error:")
             print_json(obj)
             sys.exit(1)
 
