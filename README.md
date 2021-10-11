@@ -41,14 +41,12 @@ curl -H "X-API-Key: demo-key" https://intel.sansec.io/v3/detection?platform=open
 
 ## Response
 
-A response contains zero or more detections. A "detection" is a change in our registered malware status for a particular store. It can be triggered one of these events:
+A response contains zero or more detections. A "detection" is a change in our registered malware status for a particular store. It can be triggered by one of these events:
 
 1. Malware code is either added to or removed from a store. When a new malware is injected, it will trigger a new injection. When an infected store is down for maintenance and serves an empty page, it will trigger a new detection ("all clear")
-2. Sansec adds or removes signatures that may trigger for a particular store. For example, when we change the confidence level for a particular signature from "experimentel" to "accturate", it will produce new detections.
+2. Sansec adds or removes signatures that may trigger for a particular store. For example, when we change the confidence level for a particular signature from "experimental" to "accurate", it will likely produce new detections.
 
-Either the detected suspicious code has changed, or the confidence that we have in the detection. When neither code or confidence changes, no new detections will be registered.
-
-This means that not all detections are induced by the behavior of scanned stores: our signature confidence may change, which would generate a new detection.
+NB. This means that not all detections are induced by the behavior of scanned stores.
 
 | Param              | Semantic                                                                                                                                                                                                                                            |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
