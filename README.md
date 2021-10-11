@@ -17,6 +17,8 @@ Recommended usage is to poll daily, which is the default mode for the Python cli
 
 # API reference
 
+## Request
+
 API endpoint URL: https://intel.sansec.io/v3/detection
 
 API authentication requires a `X-API-Key` HTTP header with your given license key.
@@ -31,8 +33,27 @@ API parameters can be given as GET query strings or POST form data. All paramete
 | page     | For pagination, first `page` has index 0. It is recommended though to use the `next` link, which will be given if there are more results availalble. |
 | from, to | Limit detections that were made after `from` and/or before `to`. Timestamps should be specified in RFC3339 format like this: `2021-10-26T15:20:30Z`  |
 
-Curl usage example:
+Curl usage example
 
 ```sh
 curl -H "X-API-Key: demo-key" https://intel.sansec.io/v3/detection?platform=opencart
 ```
+
+## Response
+
+A response contains zero or more detections. A "detection" is a change in our registered malware status for a particular store. It can be triggered one of these events:
+
+1. Malware code is either added to or removed from a store. When a new malware is injected, it will trigger a new injection. When an infected store is down for maintenance and serves an empty page, it will trigger a new detection ("all clear")
+2. Sansec adds or removes signatures that may trigger for a particular store. For example, when we change the confidence level for a particular signature from "experimentel" to "accturate", it will produce new detections.
+
+Either the detected suspicious code has changed, or the confidence that we have in the detection. When neither code or confidence changes, no new detections will be registered.
+
+This means that not all detections are induced by the behavior of scanned stores: our signature confidence may change, which would generate a new detection.
+
+| Param              | Semantic                                                                                                                                                                                                                                            |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| detected_at        | The RFC3339 timestamp for a site visit by our crawler that led to a new detection.                                                                                                                                                                  |
+| max_trust          | The maximum confidence level of all matched signatures for a particular store detection. With max_trust = 100, we do not expect any false positives. Special case: with max_trust = 0, none of our signatures matched and the site is likely clean. |
+| store.url          | The canonical URL of a store (after redirects)                                                                                                                                                                                                      |
+| detections.snippet | The actual (malware) code that matched one of our signatures. The actual malware may be bigger than just the snippet.                                                                                                                               |
+| detections.source  | The URL serving the detected malware. This may differ from the store.url, as malware is often hidden in embedded JS files.                                                                                                                          |
